@@ -1,7 +1,21 @@
-import { createMonster, getMonster } from '../index'
+import { createMonster, getMonster, listMonsters } from '../index'
 import { Request, Response } from 'express'
 
 export default {
+  async list(req: Request, res: Response) {
+    listMonsters().then((monsters) => {
+      if (monsters.val()) {
+        res.status(200).json({
+          monsters: [
+            monsters.val()
+          ]
+        });
+      } else {
+        res.status(204).json({ message: 'Monster not found!' })
+      }
+    })
+  },
+
   async get(req: Request, res: Response) {
     getMonster(req.params.id).then((monster) => {
       if (monster.val()) {
